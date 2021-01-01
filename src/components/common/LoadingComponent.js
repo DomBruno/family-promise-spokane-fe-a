@@ -6,7 +6,7 @@ function LoadingComponent(props) {
   const { message } = props;
 
   return (
-    <Space size="middle">
+    <Space size="middle" data-testid="loading">
       <Spin size="large" />
     </Space>
   );

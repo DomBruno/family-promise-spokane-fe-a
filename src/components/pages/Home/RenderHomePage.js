@@ -11,7 +11,7 @@ function RenderHomePage(props) {
   }, [user]);
 
   if (!user.role) {
-    return <div>Waiting..</div>;
+    return <div data-testid="waiting">Waiting..</div>;
   }
 
   switch (user.role) {
