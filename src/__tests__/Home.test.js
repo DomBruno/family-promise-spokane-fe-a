@@ -10,20 +10,20 @@ import { Provider } from 'react-redux';
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-afterEach(cleanup);
+// afterEach(cleanup);
 
-jest.mock('@okta/okta-react', () => ({
-  useOktaAuth: () => {
-    return {
-      authState: {
-        isAuthenticated: true,
-      },
-      authService: {
-        getUser: () => Promise.resolve({ name: 'sara' }),
-      },
-    };
-  },
-}));
+// jest.mock('@okta/okta-react', () => ({
+//   useOktaAuth: () => {
+//     return {
+//       authState: {
+//         isAuthenticated: true,
+//       },
+//       authService: {
+//         getUser: () => Promise.resolve({ name: 'sara' }),
+//       },
+//     };
+//   },
+// }));
 
 describe('<HomeContainer /> testing suite', () => {
   test('mounts a page', async () => {
