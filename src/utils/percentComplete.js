@@ -137,3 +137,5 @@ function returnPercentComplete(data) {
 // 41 out of 48 is about 85%
 
 returnPercentComplete(family);
+
+export { allValues };
