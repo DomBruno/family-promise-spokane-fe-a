@@ -1,3 +1,6 @@
+var path = require('path');
+var dotEnvPath = path.resolve('./.env');
+require('dotenv').config({ path: dotEnvPath });
 const config = {
   issuer: process.env.REACT_APP_OKTA_ISSUER_URI,
   redirectUri: window.location.origin + '/implicit/callback',
