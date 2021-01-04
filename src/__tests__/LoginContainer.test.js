@@ -3,21 +3,24 @@ import { useHistory } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import { SecureRoute, Security } from '@okta/okta-react';
 import { config } from '../utils/oktaConfig';
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import { rootReducer } from '../state/reducers/index';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
 import LoginContainer from '../components/pages/Login/LoginContainer';
 
-describe('<LoginContainer /> test suite', () => {
-  let history = useHistory();
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
-  const authHandler = () => {
-    // We pass this to our <Security /> component that wraps our routes.
-    // It'll automatically check if userToken is available and push back to login if not :)
-    history.push('/login');
-  };
-  test('signin widget mounts successfully', () => {
+describe('<LoginContainer /> test suite', () => {
+  test('signin widget mounts successfully', async () => {
     const { container } = render(
-      <Security {...config} onAuthRequired={authHandler}>
-        <LoginContainer />
+      <Security {...config} onAuthRequired={() => useHistory().push('/login')}>
+        <Provider store={store}>
+          <Router>
+            <LoginContainer />
+          </Router>
+        </Provider>
       </Security>
     );
     expect(container.querySelector('#sign-in-widget')).toBeTruthy();
