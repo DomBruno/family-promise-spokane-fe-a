@@ -1,28 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import { SecureRoute, Security } from '@okta/okta-react';
-import { config } from '../utils/oktaConfig';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { rootReducer } from '../state/reducers/index';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import LoginContainer from '../components/pages/Login/LoginContainer';
+import { NotFoundPage } from '../components/pages/NotFound';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
-
-describe('<LoginContainer /> test suite', () => {
-  test('signin widget mounts successfully', async () => {
-    const { container } = render(
-      <Security {...config} onAuthRequired={() => useHistory().push('/login')}>
-        <Provider store={store}>
-          <Router>
-            <LoginContainer />
-          </Router>
-        </Provider>
-      </Security>
+describe('Loading Common Component', () => {
+  test('it should mount a div based on props', () => {
+    const { getByText } = render(
+      <Router>
+        <NotFoundPage />
+      </Router>
     );
-    expect(container.querySelector('#sign-in-widget')).toBeTruthy();
+    const h1 = getByText(/404 page not found/i);
+    expect(h1.textContent).toBe('404 Page Not Found');
   });
 });
