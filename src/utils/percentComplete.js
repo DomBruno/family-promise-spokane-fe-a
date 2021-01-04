@@ -13,8 +13,8 @@ const family = {
   enrolled_status: false,
   reason_not_enrolled: 'finished',
   attendance_status: 'inactive',
-  school_type: null,
-  school_name: null,
+  school_type: 'null',
+  school_name: 'null',
   mckinney_school: false,
   flag_level: 0,
   id: 1,
@@ -42,26 +42,27 @@ const family = {
     HIV_AIDs: false,
     mental_illness: false,
     physical_disabilities: true,
-    list_indefinite_conditions: null,
-    list_issues: null,
+    list_indefinite_conditions: 'null',
+    list_issues: 'null',
   },
   schools: {
     highest_grade_completed: '12th grade',
     enrolled_status: false,
     reason_not_enrolled: 'finished',
     attendance_status: 'inactive',
-    school_type: null,
-    school_name: null,
+    school_type: 'null',
+    school_name: 'null',
     mckinney_school: false,
   },
   case_members: 3,
   predicted_exit_destination: 'permanent exit',
-  flag: null,
+  flag: 'null',
   percent_complete: 0,
   tableData: {
     id: 0,
   },
 };
+
 // in effort to keep this percentage dynamic for future code changes this list should be updated with any values that are added that do not need to be calculated for percentage complete
 // for example if we ever add message_id or something like that to the families table we dont need to count that value in total percent complete
 const valuesToExclude = [
@@ -70,37 +71,68 @@ const valuesToExclude = [
   'predicted_exit_destination',
   'flag',
   'percent_complete',
+  'table_data',
+  // TODO include any values to exclude from members data
 ];
 
-// get all the values from the family object
-const values = Object.values(family);
+// array to hold all values
+const allValues = [];
 
-const totalCalculatableValues = values.length - valuesToExclude.length;
+// counter to hold null count
+let nullCount = 0;
 
-const completeValues = [];
+// get all the values from the any object
+function getAllValues(data) {
+  if (typeof data === 'object') {
+    for (const key in data) {
+      getAllValues(data[key]);
+    }
+  } else {
+    // NOTE IF ANY VALUE IS TYPE NULL IT WILL THROW OFF THE PERCENTAGE
+    // INTAKE FORM SHOULD NOT LEAVE ANY VALUES NULL AND USE "N/A" OR STRING VALUE "NULL" FOR THIS TO WORK CORRECTLY
+    // TODO get with frontend to implement this
+    if (data === 'null') {
+      nullCount += 1;
+    }
+    // all values get pushed to array even NA or string value of 'null'
+    // exception is I couldn't find a way to count actual null types so will get with team to make sure no null types get saved unless they are in a string format or use "NA" or "Incomplete"
 
-// iterate over dictionary
-for (let i = 0; i < values.length; i++) {
-  // find all null values, and add to array of null values
-  if (values[i] != null) {
-    // console.log(values[i])
-    completeValues.push(values[i]);
+    allValues.push(data);
   }
 }
-
-const totalCompleteValues = completeValues.length;
 
 //function to calculate percentage
 function percentage(partialValue, totalValue) {
   return (100 * partialValue) / totalValue;
 }
 
-// get a percent complete
-const percentComplete = percentage(
-  totalCompleteValues,
-  totalCalculatableValues
-);
+// function that returns a percent complete
+// pass in data
+function returnPercentComplete(data) {
+  // get an array of all complete values
+  getAllValues(data);
 
-console.log(percentComplete);
+  // get number of complete values
+  const total = allValues.length - valuesToExclude.length;
 
-export { totalCalculatableValues };
+  // subtract nullCount from allValues.length and get number of complete values
+  const totalComplete = total - nullCount;
+
+  // calculate a percentage
+  const percent_complete = percentage(totalComplete, total);
+
+  console.log('total', total);
+  console.log('incomplete', nullCount);
+  console.log('complete', totalComplete);
+
+  console.log(percent_complete + '% complete');
+
+  // return a percentage
+  return percent_complete;
+}
+
+// testing data from above should return 85% because:
+// there are 7 null values and 41 complete values in example above
+// there are are 53 total values minus values to exclude is 48
+// 41 out of 48 is about 85%
+
