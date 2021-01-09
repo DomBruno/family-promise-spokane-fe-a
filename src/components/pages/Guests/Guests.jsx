@@ -8,14 +8,14 @@ import PeopleIcon from '@material-ui/icons/People';
 import InfoIcon from '@material-ui/icons/Info';
 import { tableIcons } from '../../../utils/tableIcons';
 import FlagIcon from '@material-ui/icons/Flag';
-import CardShadow from '../../CardShadow';
+// import CardShadow from '../../CardShadow';
 import FlagGuest from '../../modals/FlagGuest';
 import GuestNotes from '../../modals/GuestNotes';
-import { CopyrightOutlined } from '@material-ui/icons';
+// import { CopyrightOutlined } from '@material-ui/icons';
 import LoadingComponent from '../../common/LoadingComponent';
 import Modal from 'react-modal';
 import './guest.css';
-import { CardContent, Card } from '@material-ui/core';
+// import { CardContent, Card } from '@material-ui/core';
 import GuestMoreInfo from './GuestMoreInfo';
 Modal.setAppElement('#root');
 
@@ -77,7 +77,7 @@ const Guests = ({}) => {
       </div>
     );
   }
-  console.log(state.data);
+
   return (
     <>
       <Modal

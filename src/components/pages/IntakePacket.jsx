@@ -1,8 +1,14 @@
-// Starting point for the intake packet
+/*
+Main IntakePacket component.
+This component contains:
+  -switch statement to navigate through the intake form
+  -data structure for familyInfo(defaultData)
+*/
 
 import React, { useState } from 'react';
 import { useForm, useStep } from 'react-hooks-helper';
 
+//Intake packet page components
 import ContactInfo from './IntakePacketContent/ByGuests/ContactInfo';
 import FamilyMembers from './IntakePacketContent/ByGuests/FamilyMembers';
 import RaceEthnicityInfo from './IntakePacketContent/ByGuests/RaceEthnicityInfo';
@@ -16,19 +22,8 @@ import AdditionalInfo from './IntakePacketContent/ByGuests/AdditionalInfo';
 import IntakeStart from './IntakePacketContent/IntakeStart';
 import CreateOktaAccountForm from './IntakePacketContent/createOktaAccountForm/CreateOktaAccountForm';
 
-const steps = [
-  { id: 'IntakeStart' },
-  { id: 'ContactInfo' },
-  { id: 'FamilyMembers' },
-  { id: 'FamilyDemographics' },
-  { id: 'RaceEthnicityInfo' },
-  { id: 'BarriersPage' },
-  { id: 'ChildSchoolInfo' },
-  { id: 'DomesticViolence' },
-  { id: 'HomelessHistory' },
-  { id: 'Insurance' },
-  { id: 'AdditionalInfo' },
-];
+/* Data structure for familyInfo. Each familyMember is pushed to the familyMember array here but 
+the data structure is in ./IntakePacketContent/ByGuests/FamilyMembers.js*/
 
 let defaultData = {
   familyInfo: {
@@ -97,21 +92,41 @@ let defaultData = {
   familyMember: {},
 };
 
+// Navigation path for intake form. Each name coresponds with the switch statement id.
+const steps = [
+  { id: 'IntakeStart' },
+  { id: 'ContactInfo' },
+  { id: 'FamilyMembers' },
+  { id: 'FamilyDemographics' },
+  { id: 'RaceEthnicityInfo' },
+  { id: 'BarriersPage' },
+  { id: 'ChildSchoolInfo' },
+  { id: 'DomesticViolence' },
+  { id: 'HomelessHistory' },
+  { id: 'Insurance' },
+  { id: 'AdditionalInfo' },
+];
+
 const IntakePacket = () => {
+  //count is used to track each family member(do not POST count)
   const [count, setCount] = useState(0);
+  const [userId, setUserId] = useState(null);
+  const [formData, setForm] = useForm(defaultData);
+
+  //useStep sets intial step with steps[initialStep]
+  const { step, navigation } = useStep({ initialStep: 0, steps });
+  const { id } = step;
+
+  //useForm resolves before template literals. This function fixes that.
   const nameString = (n, location) => `familyMember.${n}.${location}`;
 
+  //Inline styling for form container
   const tempFormStyle = {
     marginLeft: '20%',
     marginTop: '50px',
     maxWidth: '900px',
   };
 
-  const [userId, setUserId] = useState(null);
-  const [formData, setForm] = useForm(defaultData);
-  const { step, navigation } = useStep({ initialStep: 0, steps });
-
-  const { id } = step;
   const props = {
     navigation,
     formData,
@@ -128,9 +143,9 @@ const IntakePacket = () => {
   if (!userId) {
     return <CreateOktaAccountForm setUserId={setUserId} />;
   }
-
   formData.familyInfo.user_id = userId;
 
+  //Returns component based on useStep hook step.
   switch (id) {
     case 'IntakeStart':
       return <IntakeStart {...props} />;

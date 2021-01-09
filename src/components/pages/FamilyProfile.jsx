@@ -1,15 +1,24 @@
-// Shows information about the entire family
+/*
+Displays information for a family.
+This component contains:
+  -Informatin for family
+  -**does NOT include info for individual member
+*/
 
-import { Divider } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+//Ant Design imports (https://ant.design/components/overview/)
 import { Avatar, Descriptions, Card, Typography } from 'antd';
-import user from '../../assets/user.svg';
+
 //redux
 import { connect } from 'react-redux';
 import actions from '../../state/actions/families';
 
 const { Text } = Typography;
+
+//For tabs component from Ant Design
+//The key refrences the keys in the contentListNoTitle varible below
 const tabListNoTitle = [
   {
     key: 'Contact Info',
@@ -39,7 +48,10 @@ const FamilyProfile = ({ familyInfo, fetchFamily }) => {
   const onTabChange = (key, type) => {
     setTab({ [type]: key });
   };
+
   let contentListNoTitle = {};
+
+  //This makes sure it fetches completely before calling to prevet an error
   if (familyInfo?.phone_one != undefined && familyInfo?.phone_one != {}) {
     contentListNoTitle = {
       'Contact Info': (

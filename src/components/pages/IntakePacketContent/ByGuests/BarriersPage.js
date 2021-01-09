@@ -1,6 +1,16 @@
+/*
+Barriers for EACH family member.
+This component contains:
+  -Barriers checklist (checkbox)
+  -Barriers notes (input)
+*/
+
 import React from 'react';
+
+//Previous/Next buttons
 import IntakeButton from '../IntakeButtons';
 
+//Ant Design imports (https://ant.design/components/overview/)
 import {
   Form,
   Input,
@@ -22,11 +32,18 @@ const BarriersPage = ({
   steps,
   step,
 }) => {
+  //Progress bar
   const pageNumber = steps.findIndex(item => item === step);
   const pages = steps.length;
   const percent = ((pageNumber + 1) / pages) * 100;
+
+  //FamilyMember Data Structure from ../../intakePacket.jsx (props)
   const { familyMember } = formData;
+
+  //Text area from Ant Design
   const { TextArea } = Input;
+
+  //Options for barriers
   const options = [
     'Alcohol Abuse',
     'Developmental Disability',
@@ -48,7 +65,9 @@ const BarriersPage = ({
 
   return (
     <div style={tempFormStyle}>
+      {/*Progress bar*/}
       <Progress percent={percent} status="active" showInfo={false} />
+
       <Card title="Barriers" bordered={false}>
         <IntakeButton navigation={navigation} />
 
@@ -56,7 +75,9 @@ const BarriersPage = ({
           Please answer the following questions about barriers. Check all that
           apply for EACH family member.
         </h3>
+
         <Form layout="vertical">
+          {/*Displays family members currently in formData */}
           {Object.keys(formData.familyMember).map((mem, key) => (
             <>
               <Divider orientation="left" plain>
@@ -104,6 +125,7 @@ const BarriersPage = ({
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 ></TextArea>
               </Form.Item>
+
               <Form.Item label="Please list Indefinite Conditions for each family member (Alcohol Abuse, Developmental Disability, Chronic Health Issue, Mental Illness, etc.)">
                 <TextArea
                   name={nameString(mem, 'barriers.list_indefinite_conditions')}

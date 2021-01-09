@@ -1,7 +1,20 @@
+/*
+Adds family members to formData.familymember.
+This component contains:
+  -Family member name (input)
+  -Family member relationship (drop down)
+Suggestions:
+  -Automatically display head of house hold (me)
+*/
+
 import React from 'react';
+
+//Previous/Next buttons
 import IntakeButton from '../IntakeButtons';
 
+//Ant Design imports (https://ant.design/components/overview/)
 import { Form, Input, Button, Space, Card, Progress, Select } from 'antd';
+
 const FamilyMembers = ({
   navigation,
   formData,
@@ -13,9 +26,8 @@ const FamilyMembers = ({
   steps,
   step,
 }) => {
-  const pageNumber = steps.findIndex(item => item === step);
-  const pages = steps.length;
-  const percent = ((pageNumber + 1) / pages) * 100;
+  /*Creates a new familyMember object in the 
+  formdata.familyMember array data structure (key=count)*/
   const addMember = key => {
     formData.familyMember[key] = {
       date_of_enrollment: null,
@@ -56,7 +68,16 @@ const FamilyMembers = ({
       percent_complete: 0,
     };
   };
+
+  //Progress bar
+  const pageNumber = steps.findIndex(item => item === step);
+  const pages = steps.length;
+  const percent = ((pageNumber + 1) / pages) * 100;
+
+  //FamilyMember Data Structure from ../../intakePacket.jsx (props)
   const { familyMember } = formData;
+
+  //Options for relationship drop down
   const relationshipOptions = [
     'Self',
     'Partner',
@@ -68,10 +89,18 @@ const FamilyMembers = ({
     'Other Family',
     'Non-Family',
   ];
+
+  //Adds new member increments count for next member
   const onChangeHandlder = () => {
     addMember(count);
     setCount(count + 1);
   };
+  /*Issues with setForm on inputs other than Input and Checkbox. 
+  The following functions manually update the entire form. 
+
+  Unable make keys dynamic in spread (currently not DRY code)
+  You must create a new function for each input feild or make keys dynamic.
+  */
   const setRelationship = mem => value => {
     familyMember[mem] = Object.assign(familyMember[mem], {
       ...familyMember[mem],
@@ -80,7 +109,9 @@ const FamilyMembers = ({
   };
   return (
     <div style={tempFormStyle}>
+      {/*Progress bar*/}
       <Progress percent={percent} status="active" showInfo={false} />
+
       <Card title="Family Members" bordered={false}>
         <IntakeButton navigation={navigation} />
 
@@ -102,6 +133,7 @@ const FamilyMembers = ({
                   onChange={setForm}
                 ></Input>
               </Form.Item>
+
               <Form.Item label="Last Name" style={{ width: '200px' }}>
                 <Input
                   name={nameString(mem, 'demographics.last_name')}
@@ -109,6 +141,7 @@ const FamilyMembers = ({
                   onChange={setForm}
                 ></Input>
               </Form.Item>
+
               <Form.Item label="Relationship" style={{ width: '200px' }}>
                 <Select
                   placeholder="Please select an option"
@@ -122,6 +155,7 @@ const FamilyMembers = ({
               </Form.Item>
             </Space>
           ))}
+
           {/*Creates new family member object in formData */}
           <Button onClick={onChangeHandlder}>Add Member</Button>
         </Form>

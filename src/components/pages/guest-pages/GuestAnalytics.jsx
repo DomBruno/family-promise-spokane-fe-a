@@ -1,3 +1,9 @@
+/* 
+This component is the guest analytics component that renders in the analytics tab when 
+a user is logged in as a guest 
+potential URL here '/analytics'
+*/
+
 import React, { useEffect, useState } from 'react';
 import { axiosWithAuth } from '../../../api/axiosWithAuth';
 
@@ -12,11 +18,6 @@ import actions from '../../../state/actions/families';
 import { returnPercentComplete } from '../../../utils/percentComplete';
 import { useHistory } from 'react-router-dom';
 import _ from 'underscore';
-
-//UI
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 
 const GuestAnalytics = ({
   loading,

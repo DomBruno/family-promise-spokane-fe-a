@@ -10,7 +10,7 @@ import {
 import { Security, LoginCallback, SecureRoute } from '@okta/okta-react';
 
 import PrivateRoute from './utils/auth/PrivateRoute';
-
+import 'dotenv';
 import 'antd/dist/antd.less';
 
 import { NotFoundPage } from './components/pages/NotFound';
@@ -129,4 +129,37 @@ function App() {
       </Switch>
     </Security>
   );
+}
+
+// if the react environment is in production, it will remove all warnings, errors, and messages from the console.
+if (process.env.NODE_ENV !== 'development') {
+  const noop = () => {};
+  [
+    'assert',
+    'clear',
+    'count',
+    'debug',
+    'dir',
+    'dirxml',
+    'error',
+    'exception',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'info',
+    'log',
+    'markTimeline',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeline',
+    'timelineEnd',
+    'timeStamp',
+    'trace',
+    'warn',
+  ].forEach(method => {
+    window.console[method] = noop;
+  });
 }

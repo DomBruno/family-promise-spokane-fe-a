@@ -1,38 +1,16 @@
 import React from 'react';
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  act,
-  getByTestId,
-} from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { NotFoundPage } from '../components/pages/NotFound';
 
-import { ProfileListPage } from '../components/pages/ProfileList';
-jest.mock('../api', () => {
-  return { getProfileData: () => Promise.resolve([]) };
-});
-jest.mock('@okta/okta-react', () => ({
-  useOktaAuth: () => {
-    return {
-      authState: {
-        isAuthenticated: true,
-      },
-      authService: {},
-    };
-  },
-}));
-
-describe('<ProfileListContainer />', () => {
-  test('renders a loading state upon loading and calling for profiles', async () => {
-    const promise = Promise.resolve();
+describe('Loading Common Component', () => {
+  test('it should mount a div based on props', () => {
     const { getByText } = render(
       <Router>
-        <ProfileListPage />
+        <NotFoundPage />
       </Router>
     );
-    const loadingMessage = getByText(/loading profiles.../i);
-    expect(loadingMessage.innerHTML).toBe('Loading Profiles...');
-    await act(() => promise);
+    const h1 = getByText(/404 page not found/i);
+    expect(h1.textContent).toBe('404 Page Not Found');
   });
 });

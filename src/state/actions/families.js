@@ -2,7 +2,7 @@
 // You can have multiple action creators per file if it makes sense to the purpose those action creators are serving.
 // Import action TYPES at the top of the file for family related actions
 import _ from 'underscore';
-import ActionButton from 'antd/lib/modal/ActionButton';
+
 import { axiosWithAuth } from '../../api/axiosWithAuth';
 
 import {
@@ -29,11 +29,8 @@ const fetchFamily = familyId => (dispatch, getState) => {
     });
 };
 
-const fetchHousehold = family_id => (dispatch, getState) => {
+const fetchHousehold = family_id => dispatch => {
   dispatch({ type: GET_HOUSEHOLD_FETCHING, payload: true });
-  // get family id from family state
-  // and then fetch household
-  const state = getState();
 
   axiosWithAuth()
     .get(`/families/${family_id}/household`)

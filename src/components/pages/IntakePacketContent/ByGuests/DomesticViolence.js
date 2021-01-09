@@ -1,6 +1,19 @@
+/*
+Domestic violence information.
+This component contains:
+  -currently fleeing a DV situation (checkbox)
+  -HMIS anonymously (checkbox)
+  -Court Order in place (checkbox)
+  -Contacted the YWCA (checkbox)
+  -Date of most recent DV incident (input)
+*/
+
 import React from 'react';
+
+//Previous/Next buttons
 import IntakeButton from '../IntakeButtons';
 
+//Ant Design imports (https://ant.design/components/overview/)
 import { Form, Input, Checkbox, Card, Progress } from 'antd';
 
 const DomesticViolence = ({
@@ -11,14 +24,19 @@ const DomesticViolence = ({
   steps,
   step,
 }) => {
+  //Progress bar
   const pageNumber = steps.findIndex(item => item === step);
   const pages = steps.length;
   const percent = ((pageNumber + 1) / pages) * 100;
+
+  //FamilyInfo from ../../intakePacket.jsx (props)
   const { familyInfo } = formData;
 
   return (
     <div style={tempFormStyle}>
+      {/*Progress bar*/}
       <Progress percent={percent} status="active" showInfo={false} />
+
       <Card title="Domestic Violence" bordered={false}>
         <IntakeButton navigation={navigation} />
 
@@ -32,6 +50,7 @@ const DomesticViolence = ({
               Are you currently fleeing a DV situation?
             </Checkbox>
           </Form.Item>
+
           <Form.Item>
             <Checkbox
               name="familyInfo.domestic_violence_info.anonymity_preferred"
@@ -43,6 +62,7 @@ const DomesticViolence = ({
               If so do you wish to be entered in HMIS anonymously?
             </Checkbox>
           </Form.Item>
+
           <Form.Item label="Date of most recent DV incident">
             <Input
               name="familyInfo.domestic_violence_info.date_last_incident"
@@ -50,6 +70,7 @@ const DomesticViolence = ({
               onChange={setForm}
             />
           </Form.Item>
+
           <Form.Item>
             <Checkbox
               name="familyInfo.domestic_violence_info.has_court_order"
@@ -59,6 +80,7 @@ const DomesticViolence = ({
               Is there a No Contact or any other Court Order in place?
             </Checkbox>
           </Form.Item>
+
           <Form.Item>
             <Checkbox
               name="familyInfo.domestic_violence_info.YWCA_contacted"

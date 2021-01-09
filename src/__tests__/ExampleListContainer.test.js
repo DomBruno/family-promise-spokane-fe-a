@@ -1,20 +1,16 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-
-import { LoadingComponent } from '../components/common';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { NotFoundPage } from '../components/pages/NotFound';
 
 describe('Loading Common Component', () => {
   test('it should mount a div based on props', () => {
-    const { getByTestId } = render(
-      <LoadingComponent message="Loading Content" />
+    const { getByText } = render(
+      <Router>
+        <NotFoundPage />
+      </Router>
     );
-    const loader = getByTestId('loading');
-    expect(loader).toBeInTheDocument();
-
-    // const message = getByText(/loading content/i);
-    // expect(message.textContent).toBe('Loading Content');
-    // rerender(<LoadingComponent message="Loading User Profile" />);
-    // const newMessage = getByText(/loading user profile/i);
-    // expect(newMessage.textContent).toBe('Loading User Profile');
+    const h1 = getByText(/404 page not found/i);
+    expect(h1.textContent).toBe('404 Page Not Found');
   });
 });

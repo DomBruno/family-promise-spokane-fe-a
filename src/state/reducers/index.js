@@ -1,3 +1,6 @@
+// since this reducer is still relatively short we kept it in one file
+// once it starts to get longer it can be broken down into more files
+
 import {
   LOG_IN,
   SET_LOADING,

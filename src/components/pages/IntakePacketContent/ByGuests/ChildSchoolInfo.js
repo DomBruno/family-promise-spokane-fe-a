@@ -1,6 +1,21 @@
+/*
+School information for EACH CHILD.
+This component contains:
+  -Grade (drop down)
+  -Atendence Status (drop down)
+  -School type (drop down)
+  -School name (input)
+  -Currently enrolled (checkbox)
+  -Connected to mcKinnely? (checkbox)
+  -Reason for not attending school (input)
+*/
+
 import React from 'react';
+
+//Previous/Next buttons
 import IntakeButton from '../IntakeButtons';
 
+//Ant Design imports (https://ant.design/components/overview/)
 import {
   Form,
   Input,
@@ -21,10 +36,17 @@ const ChildSchoolInfo = ({
   steps,
   step,
 }) => {
+  //Progress bar
   const pageNumber = steps.findIndex(item => item === step);
   const pages = steps.length;
   const percent = ((pageNumber + 1) / pages) * 100;
-  let x = 0;
+
+  //FamilyMember Data Structure from ../../intakePacket.jsx (props)
+  const { familyMember } = formData;
+
+  const { TextArea } = Input;
+
+  //Options for school grade levels
   const gradeOptions = [
     '1',
     '2',
@@ -39,6 +61,8 @@ const ChildSchoolInfo = ({
     '11',
     '12',
   ];
+
+  //Options for attendence status
   const attendStatOptions = [
     'Regular',
     'Irregular',
@@ -46,9 +70,16 @@ const ChildSchoolInfo = ({
     'Suspended',
     'Expelled',
   ];
+
+  //Options for school types
   const schoolTypeOptions = ['Public', 'Private'];
-  const { familyMember } = formData;
-  const { TextArea } = Input;
+
+  /*Issues with setForm on inputs other than Input and Checkbox. 
+  The following functions manually update the entire form. 
+
+  Unable make keys dynamic in spread (currently not DRY code)
+  You must create a new function for each input feild or make keys dynamic.
+  */
   const setFormAttend = mem => value => {
     familyMember[mem] = Object.assign(familyMember[mem], {
       ...familyMember[mem],
@@ -70,11 +101,14 @@ const ChildSchoolInfo = ({
 
   return (
     <div style={tempFormStyle}>
+      {/*Progress bar*/}
       <Progress percent={percent} status="active" showInfo={false} />
+
       <Card title="School Verification (Children)" bordered={false}>
         <IntakeButton navigation={navigation} />
 
         <Form layout="vertical">
+          {/*Displays family member with "Child" relationship currently in formData */}
           {Object.keys(formData.familyMember).map((mem, key) => (
             <>
               {familyMember[mem].demographics.relationship != 'Child' ? null : (
@@ -82,6 +116,7 @@ const ChildSchoolInfo = ({
                   <Divider orientation="left" plain>
                     {familyMember[mem].demographics.first_name}
                   </Divider>
+
                   <Space
                     key={key}
                     style={{ display: 'flex', marginBottom: 8 }}
@@ -120,6 +155,7 @@ const ChildSchoolInfo = ({
                         ))}
                       </Select>
                     </Form.Item>
+
                     <Form.Item label="School Type" style={{ width: '200px' }}>
                       <Select
                         placeholder="Please select an option"
@@ -131,6 +167,7 @@ const ChildSchoolInfo = ({
                         ))}
                       </Select>
                     </Form.Item>
+
                     <Form.Item label="School Name" style={{ width: '200px' }}>
                       <Input
                         placeholder="ex. Soap Lake MSHS"
@@ -140,6 +177,7 @@ const ChildSchoolInfo = ({
                       />
                     </Form.Item>
                   </Space>
+
                   <Form.Item label="Currently Enrolled?">
                     <Checkbox
                       name={nameString(mem, 'schools.enrolled_status')}
@@ -147,6 +185,7 @@ const ChildSchoolInfo = ({
                       onChange={setForm}
                     />
                   </Form.Item>
+
                   <Form.Item label="Connected w/ McKinney-Vento School">
                     <Checkbox
                       name={nameString(mem, 'schools.mckinney_school')}
@@ -154,6 +193,7 @@ const ChildSchoolInfo = ({
                       onChange={setForm}
                     />
                   </Form.Item>
+
                   <Form.Item label="IF YOUR CHILD(REN) IS/ARE NOT ENROLLED IN SCHOOL AT THIS TIME PLEASE INDICATE THE REASON WHY BELOW">
                     <TextArea
                       autoSize={{ minRows: 3, maxRows: 5 }}

@@ -1,4 +1,7 @@
+// This file takes a household object and returns an array [percent, [incomplete stuff]]
 // example household object can be viewed by making a GET request to http://localhost:8000/families/{family_id}/household
+// right at the end of labs we noticed a bug causing duplicates everytime there the refresh button is clicked on the analytics tab of the guest dashboard
+// I looked into using underscore.js to implement this functionality and will be working on this in my fork of this project -leslie r (thereactgirl)
 
 // array to hold all values
 const allValues = [];
@@ -9,7 +12,7 @@ const incompleteFields = [];
 // counter to hold null count
 let nullCount = 0;
 
-// get all the values from the any object
+// get all the values from the any object using recursions
 function getAllValues(data) {
   // if data is object recurse to get those values
   if (typeof data === 'object') {

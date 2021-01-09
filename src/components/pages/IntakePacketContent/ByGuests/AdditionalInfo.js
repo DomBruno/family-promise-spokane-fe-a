@@ -1,4 +1,17 @@
+/*
+General infromation about EACH family member.
+This component contains:
+  -Vehicle Information(input(s))
+  -Goverment Benefits(checkbox(s))
+  -Pregnancy Information(checkbox, input(s))
+Suggestions:
+  -Change options for gov benefits (stakeholder)
+*/
+
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+//Ant Design imports (https://ant.design/components/overview/)
 import {
   Form,
   Button,
@@ -10,8 +23,8 @@ import {
   Progress,
   Divider,
 } from 'antd';
+
 import { axiosWithAuth } from '../../../../api/axiosWithAuth';
-import { useHistory } from 'react-router-dom';
 
 const AdditionalInfo = ({
   navigation,
@@ -21,14 +34,51 @@ const AdditionalInfo = ({
   steps,
   step,
 }) => {
-  const [familyId, setFamilyId] = useState(null);
+  //Progress bar
   const pageNumber = steps.findIndex(item => item === step);
   const pages = steps.length;
   const percent = ((pageNumber + 1) / pages) * 100;
-  const { previous } = navigation;
+
+  //FamilyMember Data Structure and FamilyInfo from ../../intakePacket.jsx (props)
   const { familyInfo, familyMember } = formData;
+
+  const { previous } = navigation;
   const history = useHistory();
 
+  //Options for Gov Benifits w/dataBase name counterpart
+  const GOVBenifits = [
+    'Food Stamps',
+    'CPS/FPS (Open case)',
+    'RRH (Rapid Rehousing) ',
+    'Housing Voucher (Current)',
+    'Veteran Services',
+    'SNAP assistance',
+  ];
+  const GOVBenifitsDataName = {
+    'Food Stamps': 'foodstamps',
+    'CPS/FPS (Open case)': 'cps_fps',
+    'RRH (Rapid Rehousing) ': 'RRH',
+    'Housing Voucher (Current)': 'housing_voucher',
+    'Veteran Services': 'veteran_services',
+    'SNAP assistance': 'snap',
+  };
+
+  //Options for Vehicle Info w/dataBase name counterpart
+  const VehicleInfo = ['Vehicle Make', 'Model', 'Year', 'Color', 'License #'];
+  const VehicleInfoDataNames = {
+    'Vehicle Make': 'make',
+    Model: 'model',
+    Year: 'year',
+    Color: 'color',
+    'Lic #': 'license_plate',
+  };
+
+  //useForm resolves before template literals. This function fixes that.
+  const familyInfoNameString = (section, value) => {
+    return `familyInfo.${section}.${value}`;
+  };
+
+  //POSTS family info then posts each member with familyId
   const submitHandlder = e => {
     e.preventDefault();
     axiosWithAuth()
@@ -49,35 +99,10 @@ const AdditionalInfo = ({
       })
       .catch(err => console.log('FamiliesError', err));
   };
-  const familyInfoNameString = (section, value) => {
-    return `familyInfo.${section}.${value}`;
-  };
-  const GOVBenifits = [
-    'Food Stamps',
-    'CPS/FPS (Open case)',
-    'RRH (Rapid Rehousing) ',
-    'Housing Voucher (Current)',
-    'Veteran Services',
-    'SNAP assistance',
-  ];
-  const GOVBenifitsDataName = {
-    'Food Stamps': 'foodstamps',
-    'CPS/FPS (Open case)': 'cps_fps',
-    'RRH (Rapid Rehousing) ': 'RRH',
-    'Housing Voucher (Current)': 'housing_voucher',
-    'Veteran Services': 'veteran_services',
-    'SNAP assistance': 'snap',
-  };
-  const VehicleInfo = ['Vehicle Make', 'Model', 'Year', 'Color', 'License #'];
-  const VehicleInfoDataNames = {
-    'Vehicle Make': 'make',
-    Model: 'model',
-    Year: 'year',
-    Color: 'color',
-    'Lic #': 'license_plate',
-  };
+
   return (
     <div style={tempFormStyle}>
+      {/*Progress bar*/}
       <Progress percent={percent} status="active" showInfo={false} />
       <Card title="Additional Information" bordered={false}>
         <div
@@ -87,6 +112,7 @@ const AdditionalInfo = ({
             marginBottom: '30px',
           }}
         >
+          {/*Not using intakeButtons component because of submitHandler*/}
           <Button
             type="primary"
             htmlType="button"
@@ -114,6 +140,7 @@ const AdditionalInfo = ({
           <Divider orientation="left" plain>
             Vehicle Information
           </Divider>
+
           <Form.Item style={{ marginBottom: '40px' }}>
             <Input.Group>
               {VehicleInfo.map((label, key) => (
@@ -130,9 +157,11 @@ const AdditionalInfo = ({
               ))}
             </Input.Group>
           </Form.Item>
+
           <Divider orientation="left" plain>
             Government Benefits
           </Divider>
+
           <Form.Item label="Please check all that you currently receive:">
             <Row justify={'space-between'} align={'top'}>
               {GOVBenifits.map(benifit => (
@@ -160,9 +189,11 @@ const AdditionalInfo = ({
               ))}
             </Row>
           </Form.Item>
+
           <Divider orientation="left" plain>
             Pregnancy Information
           </Divider>
+
           <Form.Item>
             <Checkbox
               style={{ marginBottom: '10px' }}
@@ -172,6 +203,7 @@ const AdditionalInfo = ({
             >
               Is any one in your household pregnant?
             </Checkbox>
+
             <Form.Item label="If yes, who?">
               <Input
                 name="familyInfo.insurance.pregnancies.if_yes_who"
@@ -179,6 +211,7 @@ const AdditionalInfo = ({
                 onChange={setForm}
               />
             </Form.Item>
+
             <Form.Item label="When is the due date?">
               <Input
                 name="familyInfo.insurance.pregnancies.due_date"
