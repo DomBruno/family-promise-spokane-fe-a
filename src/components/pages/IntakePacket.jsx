@@ -1,3 +1,5 @@
+// Starting point for the intake packet
+
 import React, { useState } from 'react';
 import { useForm, useStep } from 'react-hooks-helper';
 

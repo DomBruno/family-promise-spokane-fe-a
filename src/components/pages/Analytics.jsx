@@ -1,3 +1,5 @@
+// Mock analytics page that shows the current state of the shelter
+
 import React, { useState, useEffect } from 'react';
 //redux
 import { connect } from 'react-redux';

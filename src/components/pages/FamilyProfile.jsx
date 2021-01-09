@@ -1,3 +1,5 @@
+// Shows information about the entire family
+
 import { Divider } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

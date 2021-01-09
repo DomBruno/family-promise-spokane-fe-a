@@ -1,3 +1,5 @@
+// Sidebar that conditionally renders Nav items based on the users role
+
 import React from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import {

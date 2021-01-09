@@ -1,3 +1,5 @@
+// Shows a table with the family members belonging to the guest
+
 import React, { useEffect, useState } from 'react';
 import { axiosWithAuth } from '../../../api/axiosWithAuth';
 import LoadingComponent from '../../common/LoadingComponent';
