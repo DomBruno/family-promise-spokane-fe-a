@@ -5,12 +5,29 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import CardShadow from '../CardShadow';
+import { axiosWithAuth } from '../../api/axiosWithAuth';
+import { useSelector } from 'react-redux';
 
 // Used for displaying/attaching notes to individual members
 
-const GuestNotes = ({ guest, setIsNotesOpen }) => {
+const GuestNotes = ({ guestId, setIsNotesOpen }) => {
   const [noteValue, setNoteValue] = React.useState('');
   const [notes, setNotes] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const user = useSelector(state => state.CURRENT_USER);
+
+  const fetchNotes = async id => {
+    setLoading(true);
+    try {
+      const res = await axiosWithAuth().get(`/members/${id}/notes`);
+
+      setNotes(res.data.notes);
+    } catch (error) {
+      alert('Unable to retrieve notes');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = e => {
     setNoteValue(e.target.value);
@@ -18,8 +35,35 @@ const GuestNotes = ({ guest, setIsNotesOpen }) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setNotes([...notes, noteValue]);
+
+    const noteBody = {
+      author_id: user.id,
+      content: noteValue,
+    };
+
+    setLoading(true);
+
+    try {
+      const res = await axiosWithAuth().post(
+        `/members/${guestId}/notes`,
+        noteBody
+      );
+
+      const note = res.data.note;
+
+      setNotes([...notes, note]);
+
+      setNoteValue('');
+    } catch (error) {
+      alert('Unable to add note');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchNotes(guestId);
+  }, []);
 
   return (
     <CardShadow
@@ -35,10 +79,11 @@ const GuestNotes = ({ guest, setIsNotesOpen }) => {
               onClick={() => setIsNotesOpen(false)}
             ></ArrowBackIcon>
           </div>
+          {loading && <h1>Loading..</h1>}
           <div className="notes-container-inner">
             <div className="notes">
               {notes.map(note => {
-                return <h4 className="note">{note}</h4>;
+                return <h4 className="note">{note.content}</h4>;
               })}
             </div>
           </div>

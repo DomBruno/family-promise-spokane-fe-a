@@ -91,7 +91,9 @@ const Guests = ({}) => {
         {result ? <GuestMoreInfo familyInfo={result} /> : ''}
       </Modal>
       <div className="guest-table-container">
-        {isNotesOpen && <GuestNotes setIsNotesOpen={setIsNotesOpen} />}
+        {isNotesOpen && (
+          <GuestNotes guestId={guestId} setIsNotesOpen={setIsNotesOpen} />
+        )}
         {isFlagOpen && (
           <FlagGuest
             setIsFlagOpen={setIsFlagOpen}
@@ -130,7 +132,7 @@ const Guests = ({}) => {
                 icon: NoteIcon,
                 tooltip: 'Notes',
                 onClick: (event, rowData) => {
-                  // Do save operation
+                  setGuestId(rowData.id);
                   setIsNotesOpen(true);
                 },
               },
