@@ -105,9 +105,9 @@ const Guests = ({}) => {
               exportButton: true,
               rowStyle: rowData => ({
                 backgroundColor:
-                  rowData.flag_level == 2
+                  rowData.flag == '2'
                     ? 'rgba(255, 255, 0, 0.419)'
-                    : rowData.flag_level == 3
+                    : rowData.flag == '3'
                     ? 'rgba(255, 0, 0, 0.418)'
                     : 'white',
               }),

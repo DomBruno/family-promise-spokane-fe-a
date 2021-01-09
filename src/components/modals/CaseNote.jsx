@@ -4,6 +4,8 @@ import { Input, Form, Button, Switch } from 'antd';
 import UserOutlined from '@ant-design/icons/UserOutlined';
 import { axiosWithAuth } from '../../api/axiosWithAuth';
 
+// Used for CRUD operations on case notes.
+
 const { TextArea } = Input;
 
 const CaseNote = ({ note, setNotes, setCurrentNote, toggleModal }) => {

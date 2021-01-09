@@ -16,6 +16,8 @@ import { CopyrightOutlined } from '@material-ui/icons';
 import Chip from '@material-ui/core/Chip';
 import { Button } from '@material-ui/core';
 
+// Table that shows all family members
+
 const FamilyMembers = () => {
   const history = useHistory();
   const params = useParams();
@@ -78,6 +80,8 @@ const FamilyMembers = () => {
       <div className="guest-table">
         <MaterialTable
           options={{
+            // Changes color of the row depending on their flag_level
+
             exportButton: true,
             rowStyle: rowData => ({
               backgroundColor:

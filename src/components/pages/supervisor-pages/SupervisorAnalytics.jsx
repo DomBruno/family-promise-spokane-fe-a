@@ -57,6 +57,8 @@ const rows = [
   { name: 'Roxie', surname: 'Harvey', age: 65 },
 ];
 
+// Hardcoded dashboard analytics
+
 const Analytics = () => {
   const [logs, setLogs] = useState([]);
   const [card, setCard] = useState(false);

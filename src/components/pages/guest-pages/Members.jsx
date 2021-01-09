@@ -20,6 +20,8 @@ import { Button } from '@material-ui/core';
 
 import { useSelector } from 'react-redux';
 
+// Shows all family members for a guest. Almost identical to the FamilyMembers component
+
 const MembersPage = () => {
   const user = useSelector(state => state.CURRENT_USER);
   const history = useHistory();

@@ -15,6 +15,8 @@ import { useSelector } from 'react-redux';
 
 const { TextArea } = Input;
 
+// Displaying/posts notes to a individual family
+
 const Notes = () => {
   const [formValues, setFormValues] = useState({});
   const [creatingNote, setCreatingNote] = useState(false);
@@ -28,6 +30,8 @@ const Notes = () => {
   const user = useSelector(state => state.CURRENT_USER);
 
   const handleFinish = e => {
+    // Determine whether the note should be hidden from the guest
+
     let shareable;
     if (!checked) shareable = true;
     else shareable = false;
@@ -95,6 +99,8 @@ const Notes = () => {
 
   return (
     <div className="notes-page-container">
+      {/* Only allow staff members to access the modal for CRUD operations */}
+
       {isModalOpen && user.role !== 'guest' && (
         <CaseNote
           setNotes={setNotes}
@@ -119,6 +125,7 @@ const Notes = () => {
                   toggleCaseModal();
                 }}
               >
+                {/* Remove the option to see more actions if the user is a guest */}
                 {user.role !== 'guest' && 'more'}
               </p>
             }
@@ -130,6 +137,7 @@ const Notes = () => {
             style={{ width: '60%' }}
             title={note.subject}
           >
+            {/* Shows only the first hundred characters */}
             {note.content.slice(0, 100) + '...'}
           </Card>
         );

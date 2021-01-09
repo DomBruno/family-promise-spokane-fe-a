@@ -3,23 +3,24 @@ import React from 'react';
 import CardShadow from '../CardShadow';
 import { axiosWithAuth } from '../../api/axiosWithAuth';
 
+// Handles the flagging of guests
+
 const FlagGuest = ({ state, setState, setIsFlagOpen, guestId }) => {
   const handleModalClose = e => {
     setIsFlagOpen(false);
   };
 
-  const handleChildClick = e => {
+  const handleChildClick = async e => {
     e.persist();
     e.stopPropagation();
-
-    axiosWithAuth().put();
+    let newFlagLevel = String(e.target.value);
 
     setState(prevState => {
       const data = prevState.data;
 
       data.map(el => {
         if (el.id == guestId) {
-          el.flag_level = e.target.value;
+          el.flag = newFlagLevel;
         }
         return el;
       });
@@ -27,7 +28,14 @@ const FlagGuest = ({ state, setState, setIsFlagOpen, guestId }) => {
       setIsFlagOpen(false);
       return { ...prevState, data };
     });
+
+    try {
+      await axiosWithAuth().put(`/members/${guestId}`, { flag: newFlagLevel });
+    } catch (error) {
+      alert('Unable to flag guest');
+    }
   };
+
   return (
     <CardShadow onClick={handleModalClose}>
       <div className="flag-guest-container">

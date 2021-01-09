@@ -6,6 +6,8 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import CardShadow from '../CardShadow';
 
+// Used for displaying/attaching notes to individual members
+
 const GuestNotes = ({ guest, setIsNotesOpen }) => {
   const [noteValue, setNoteValue] = React.useState('');
   const [notes, setNotes] = React.useState([]);
