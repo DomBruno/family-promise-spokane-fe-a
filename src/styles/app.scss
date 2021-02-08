@@ -1,4 +1,20 @@
 // css reset
+
+
+// Dark Mode
+html {
+    transition: color 300ms, background-color 300ms;
+}
+[data-theme='dark'] {
+  filter: invert(1) hue-rotate(180deg);
+  img{
+  filter: invert(1) hue-rotate(180deg);
+}
+[data-theme='light'] {
+  filter: invert(0) hue-rotate(0deg);
+}
+// End Dark Mode
+
 body {
   margin: 0;
   padding: 0;
